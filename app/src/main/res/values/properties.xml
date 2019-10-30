@@ -1,0 +1,4 @@
+<resources>
+    <string name="serverIp">192.168.21.94</string>
+    <integer name="serverPort">5001</integer>
+</resources>

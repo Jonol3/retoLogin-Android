@@ -7,11 +7,11 @@ package com.example.reto1.control;
 
 /**
  *
- * @author Daira Eguzkiza
+ * @author Daira Eguzkiza, Jon Calvo Gaminde
  */
 public class ClientFactory {
-    public static Client getClient(){
-        return new ClientImplementation();
+    public static Client getClient(String ip, int port){
+        return new ClientImplementation(ip, port);
     }
     
 }

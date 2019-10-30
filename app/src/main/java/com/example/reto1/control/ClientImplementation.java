@@ -5,13 +5,12 @@
  */
 package com.example.reto1.control;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.ResourceBundle;
+
+import android.content.Context;
+import android.content.res.AssetManager;
+
+import com.example.reto1.R;
 import java.util.logging.Logger;
-import retoLogin.Message;
 import retoLogin.User;
 import retoLogin.exceptions.*;
 
@@ -20,15 +19,15 @@ import retoLogin.exceptions.*;
  * @author Daira Eguzkiza
  */
 public class ClientImplementation implements Client {
-
+    String ip;
+    int puerto;
     private static final Logger LOGGER = Logger
             .getLogger("com.example.reto1.control.ClientImplementation");
-    ResourceBundle properties = ResourceBundle.getBundle("com.example.reto1.clientConnection");
-    private final String IP = properties.getString("serverIp");
-    private final int PUERTO = Integer.parseInt(properties.getString("serverPort"));
-    
 
-    
+    public ClientImplementation(String ip, int puerto) {
+        this.ip = ip;
+        this.puerto = puerto;
+    }
 
     /**
      * Method that connects with a server using a socket and returns a message
@@ -50,62 +49,16 @@ public class ClientImplementation implements Client {
     @SuppressWarnings("LoggerStringConcat")
     public User loginUser(User user) throws LoginException,
             BadLoginException, BadPasswordException, NoThreadAvailableException {
-        Message message = new Message();
-        Socket cliente = null;
-        ObjectInputStream entrada = null;
-        ObjectOutputStream salida = null;
+
+        ClientThread clientThread = new ClientThread(ip, puerto, 1, user);
+        clientThread.start();
         try {
-            cliente = new Socket(IP, PUERTO);
-            LOGGER.info("Connected with the server.");
-
-            salida = new ObjectOutputStream(cliente.getOutputStream());
-            entrada = new ObjectInputStream(cliente.getInputStream());
-
-            LOGGER.info("Mando el user");
-            message.setUser(user);
-            message.setType(1);
-            salida.writeObject(message);
-            LOGGER.info("Enviado");
-            Message m = (Message) entrada.readObject();
-            LOGGER.info("Objeto recibido");
-            LOGGER.info("respuesta: " + m.getType());
-
-            switch (m.getType()) {
-                case 0:
-                    user = m.getUser();
-                    LOGGER.info(user.getFullName() + " "
-                            + user.getEmail());
-                    return user;
-                case 1:
-                    throw new LoginException("Error trying to log in.");
-                case 2:
-                    throw new NoThreadAvailableException("Server is busy.");
-                case 3:
-                    throw new BadLoginException("Bad login.");
-                case 4:
-                    throw new BadPasswordException("The password is not "
-                            + "correct.");
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            LOGGER.severe("Error: " + e.getMessage());
-            throw new LoginException("Error trying to log in.");
-        } finally {
-            try {
-                if (cliente != null) {
-                    cliente.close();
-                }
-                if (entrada != null) {
-                    entrada.close();
-                }
-
-                if (salida != null) {
-                    salida.close();
-                }
-            } catch (IOException e) {
-                e.getStackTrace();
-            }
+            clientThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return user;
+        User data = clientThread.getLoginResult();
+        return data;
     }
 
     /**
@@ -126,55 +79,14 @@ public class ClientImplementation implements Client {
     @SuppressWarnings("LoggerStringConcat")
     public User registerUser(User user) throws RegisterException,
             AlreadyExistsException, NoThreadAvailableException {
-        Message message = new Message();
-        Socket cliente = null;
-        ObjectInputStream entrada = null;
-        ObjectOutputStream salida = null;
+        ClientThread clientThread = new ClientThread(ip, puerto, 2, user);
+        clientThread.start();
         try {
-            cliente = new Socket(IP, PUERTO);
-            LOGGER.info("Conexión realizada con servidor");
-
-            salida = new ObjectOutputStream(cliente.getOutputStream());
-            entrada = new ObjectInputStream(cliente.getInputStream());
-
-            message.setUser(user);
-            message.setType(2);
-            salida.writeObject(message);
-
-            Message m = (Message) entrada.readObject();
-            LOGGER.info("Registrado bien: " + "RECIBIDO EL NÚMERO" + m.getType());
-            switch (m.getType()) {
-                case 0:
-                    LOGGER.info("TODO BIEN");
-                    return user;
-                case 1:
-                    throw new RegisterException("Error trying to log in.");
-                case 2:
-                    throw new NoThreadAvailableException("Server is busy.");
-                case 3:
-                    throw new AlreadyExistsException("User already exists.");
-            }
-
-        } catch (IOException | ClassNotFoundException e) {
-            LOGGER.severe("Error: " + e.getMessage());
-            throw new RegisterException("Error trying to register.");
-        } finally {
-
-            try {
-                if (cliente != null) {
-                    cliente.close();
-                }
-                if (entrada != null) {
-                    entrada.close();
-                }
-
-                if (salida != null) {
-                    salida.close();
-                }
-            } catch (IOException e) {
-                LOGGER.severe("Error: " + e.getMessage());
-            }
+            clientThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        clientThread.getRegisterResult();
         return user;
     }
 }
