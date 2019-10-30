@@ -1,5 +1,6 @@
 package com.example.reto1;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import retoLogin.exceptions.BadLoginException;
 import retoLogin.exceptions.BadPasswordException;
@@ -7,6 +8,7 @@ import retoLogin.exceptions.LoginException;
 import retoLogin.exceptions.NoThreadAvailableException;
 import retoLogin.User;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +55,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             alert.showAndWait();
 
             */
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Alert");
+            alertDialog.setMessage("You must enter a valid username.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
             return 1;
         }else if(login.length()<1 || passwd.length()<1){
             /*
@@ -64,13 +76,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             alert.showAndWait();
             */
 
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Alert");
+            alertDialog.setMessage("You must enter a username and a password.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
             return 2;
         }else{
             try{
                 User user = new User();
                 user.setLogin(login);
                 user.setPassword(passwd);
-
 
                 Client client = ClientFactory.getClient();
                 user = client.loginUser(user);
@@ -85,6 +107,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 alert.showAndWait();
                  */
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage("Unexpected error.");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }catch(BadLoginException e){
                 /*
                 Alert alert = new Alert(AlertType.INFORMATION);
@@ -94,6 +127,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 alert.showAndWait();
                 */
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage("Enter a valid username.");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }catch(NoThreadAvailableException e){
                 /*
                 Alert alert = new Alert(AlertType.INFORMATION);
@@ -103,6 +146,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 alert.showAndWait();
                  */
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage("Busy server.");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }catch(BadPasswordException e){
                 /*
                 Alert alert = new Alert(AlertType.INFORMATION);
@@ -112,6 +165,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 alert.showAndWait();
                  */
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage("The password you have entered is not correct.");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }
 
             /*
