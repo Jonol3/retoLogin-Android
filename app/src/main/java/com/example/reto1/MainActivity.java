@@ -7,6 +7,7 @@ import retoLogin.exceptions.LoginException;
 import retoLogin.exceptions.NoThreadAvailableException;
 import retoLogin.User;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -46,10 +47,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //THE LIMITER SHOULD DO ITS JOB, BUT STILL I AM CHECKING THE LENGTH
         //JUST IN CASE...
         if(login.length()>30 || specialChars){
-            Toast.makeText(getApplicationContext(),"You must enter a valid username.",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"You must enter a valid username.",Toast.LENGTH_LONG).show();
             return 1;
         }else if(login.length()<1 || passwd.length()<1){
-            Toast.makeText(getApplicationContext(),"You must enter a username and a password.",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"You must enter a username and a password.",Toast.LENGTH_LONG).show();
             return 2;
         }else{
             try{
@@ -60,22 +61,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Client client = ClientFactory.getClient(getResources().getString(R.string.serverIp), getResources().getInteger(R.integer.serverPort));
                 user = client.loginUser(user);
 
-                //TODO Connect the SignOut
+                Intent intent = new Intent(this, LogOut.class);
+                intent.putExtra("USER", user);
+                setResult(RESULT_OK, intent);
+                startActivity(intent);
             }catch(LoginException e){
-                Toast.makeText(getApplicationContext(), "Unexpected error",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Unexpected error",Toast.LENGTH_LONG).show();
             }catch(BadLoginException e){
-                Toast.makeText(getApplicationContext(),"The user you have entered is not correct.",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"The user you have entered is not correct.",Toast.LENGTH_LONG).show();
             }catch(NoThreadAvailableException e){
-                Toast.makeText(getApplicationContext(),"Busy server. Please wait.",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Busy server. Please wait.",Toast.LENGTH_LONG).show();
             }catch(BadPasswordException e){
-                Toast.makeText(getApplicationContext(),"The password you have entered is not correct.",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"The password you have entered is not correct.",Toast.LENGTH_LONG).show();
             }
         }
         return 3;
     }
 
     public void handleSignUpButtonAction(){
-        //ESTO IRÍA AL SIGN UP
+        Intent intent = new Intent(this, SignUp.class);
+        setResult(RESULT_OK, intent);
+        startActivity(intent);
     }
     public void onClick(View view){
         if(view.getId()==buttonLogin.getId() ) {

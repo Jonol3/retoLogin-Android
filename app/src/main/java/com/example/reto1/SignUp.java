@@ -62,11 +62,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnBack:
-                Toast.makeText(this,"Back button pressed",Toast.LENGTH_SHORT);
+                Toast.makeText(this,"Back button pressed",Toast.LENGTH_SHORT).show();
                 finish();//Go to the login activity
                 break;
             case R.id.btnUndo:
-                Toast.makeText(this,"Undo button pressed",Toast.LENGTH_SHORT);
+                Toast.makeText(this,"Undo button pressed",Toast.LENGTH_SHORT).show();
                 user.setFullName(fullName.getText().toString());
                 user.setEmail(email.getText().toString());
                 user.setLogin(login.getText().toString());
@@ -78,31 +78,31 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                 btnRedo.setEnabled(true);
                 break;
             case R.id.btnRedo:
-                Toast.makeText(this,"Redo button pressed",Toast.LENGTH_SHORT);
+                Toast.makeText(this,"Redo button pressed",Toast.LENGTH_SHORT).show();
                 fullName.setText(user.getFullName());
                 email.setText(user.getEmail());
                 login.setText(user.getLogin());
                 btnRedo.setEnabled(false);
                 break;
             case R.id.btnSignUp:
-                Toast.makeText(this,"Sign Up button pressed",Toast.LENGTH_SHORT);
+                Toast.makeText(this,"Sign Up button pressed",Toast.LENGTH_SHORT).show();
                 Pattern pattern = Pattern.compile(REGULAREXPRESSION);
                 Matcher matcher = pattern.matcher(email.getText());
                 if(!password.getText().equals(confirmPassword.getText())){
-                    Toast.makeText(this,"The passwords doesn't match",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"The passwords doesn't match",Toast.LENGTH_SHORT).show();
                 }else if(login.getText().equals("")||email.getText().equals("")||fullName.getText().equals("")||
                     password.getText().equals("")||confirmPassword.getText().equals("")){
-                    Toast.makeText(this,"Some field is empty",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"Some field is empty",Toast.LENGTH_SHORT).show();
                 }else if(login.getText().length()>50){
-                    Toast.makeText(this,"Error: login too long",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"Error: login too long",Toast.LENGTH_SHORT).show();
                 }else if(email.getText().length()>80){
-                    Toast.makeText(this,"Error: The email is too long",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"Error: The email is too long",Toast.LENGTH_SHORT).show();
                 }else if(fullName.getText().length()>85){
-                    Toast.makeText(this,"Error: Full Name too long",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"Error: Full Name too long",Toast.LENGTH_SHORT).show();
                 }else if(password.getText().length()>200 || confirmPassword.getText().length()>200){
-                    Toast.makeText(this,"Error: Password is too long",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"Error: Password is too long",Toast.LENGTH_SHORT).show();
                 }else if(!matcher.matches()){
-                    Toast.makeText(this,"Error: The email doesn't match the minimum requirements",Toast.LENGTH_SHORT);
+                    Toast.makeText(this,"Error: The email doesn't match the minimum requirements",Toast.LENGTH_SHORT).show();
                 }else{
                     //TODO
                     //Check the things on the database and if everything goes well then go to Log Out activity
@@ -117,14 +117,16 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                         client.registerUser(user);
 
                     }catch (NoThreadAvailableException e){
-                        Toast.makeText(this,"Error: The server is bussy right now, please try again in a few minutes",Toast.LENGTH_LONG);
+                        Toast.makeText(this,"Error: The server is bussy right now, please try again in a few minutes",Toast.LENGTH_LONG).show();
                     }catch (RegisterException e){
-                        Toast.makeText(this,"Error: Cannot register the new user",Toast.LENGTH_LONG);
+                        Toast.makeText(this,"Error: Cannot register the new user",Toast.LENGTH_LONG).show();
                     } catch (AlreadyExistsException e){
-                        Toast.makeText(this,"Error: The user with the login you are trying to register already exists",Toast.LENGTH_LONG);
+                        Toast.makeText(this,"Error: The user with the login you are trying to register already exists",Toast.LENGTH_LONG).show();
                     }finally{
                         Intent intent = new Intent(this, LogOut.class);
                         intent.putExtra("USER", user);
+                        setResult(RESULT_OK, intent);
+                        startActivity(intent);
                     }
                 }
                 break;
