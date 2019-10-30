@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.reto1.control.Client;
 import com.example.reto1.control.ClientFactory;
@@ -45,25 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //THE LIMITER SHOULD DO ITS JOB, BUT STILL I AM CHECKING THE LENGTH
         //JUST IN CASE...
         if(login.length()>30 || specialChars){
-            /*Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Invalid username.");
-            alert.setHeaderText(null);
-            alert.setContentText("You must enter a valid username.");
-
-            alert.showAndWait();
-
-            */
+            Toast.makeText(getApplicationContext(),"You must enter a valid username.",Toast.LENGTH_LONG).show();
             return 1;
         }else if(login.length()<1 || passwd.length()<1){
-            /*
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Empty username/password.");
-            alert.setHeaderText(null);
-            alert.setContentText("You must enter a username and a password.");
-
-            alert.showAndWait();
-            */
-
+            Toast.makeText(getApplicationContext(),"You must enter a username and a password.",Toast.LENGTH_LONG).show();
             return 2;
         }else{
             try{
@@ -71,61 +57,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 user.setLogin(login);
                 user.setPassword(passwd);
 
-
-                Client client = ClientFactory.getClient();
+                Client client = ClientFactory.getClient(getResources().getString(R.string.serverIp), getResources().getInteger(R.integer.serverPort));
                 user = client.loginUser(user);
 
-                //TRY TO CONNECT AND ALL THAT MOVIDA
+                //TODO Connect the SignOut
             }catch(LoginException e){
-                /*
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Unexpected error");
-
-                alert.showAndWait();
-                 */
+                Toast.makeText(getApplicationContext(), "Unexpected error",Toast.LENGTH_LONG).show();
             }catch(BadLoginException e){
-                /*
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Busy server. Please wait.");
-
-                alert.showAndWait();
-                */
+                Toast.makeText(getApplicationContext(),"The user you have entered is not correct.",Toast.LENGTH_LONG).show();
             }catch(NoThreadAvailableException e){
-                /*
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Invalid User.");
-                alert.setHeaderText(null);
-                alert.setContentText("The user you have entered is not correct.");
-
-                alert.showAndWait();
-                 */
+                Toast.makeText(getApplicationContext(),"Busy server. Please wait.",Toast.LENGTH_LONG).show();
             }catch(BadPasswordException e){
-                /*
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Empty username/password.");
-                alert.setHeaderText(null);
-                alert.setContentText("The password you have entered is not correct.");
-
-                alert.showAndWait();
-                 */
+                Toast.makeText(getApplicationContext(),"The password you have entered is not correct.",Toast.LENGTH_LONG).show();
             }
-
-            /*
-            Parent root = null;
-            try {
-                root = FXMLLoader.load(getClass()
-                        .getResource("view/signOut.fxml"));
-            } catch (IOException ex) {
-                Logger.getLogger(FXMLDocumentControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            FXMLDocumentControllerSignOut controller = new FXMLDocumentControllerSignOut();
-            controller.setUser(user);
-            controller.initStage(root);
-             */
         }
         return 3;
     }
