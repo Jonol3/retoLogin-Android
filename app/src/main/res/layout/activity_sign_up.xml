@@ -112,7 +112,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tfLogin" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -124,7 +124,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pfPassword" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnSignUp"
         android:layout_width="237dp"
         android:layout_height="54dp"
         android:layout_marginBottom="50dp"
@@ -136,15 +136,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/btnUndo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
         android:backgroundTint=" #332f2c"
         android:text="@string/btnUndo"
         android:textColor="@android:color/background_light"
-        app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintEnd_toStartOf="@+id/btnRedo"
+        app:layout_constraintStart_toEndOf="@+id/btnBack"
         app:layout_constraintTop_toBottomOf="@+id/pfPassword" />
 
     <TextView
@@ -174,7 +174,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pfPassword" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnRedo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="112dp"
