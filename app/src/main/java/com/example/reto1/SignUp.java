@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retoLogin.User;
 
@@ -22,6 +24,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     private Button btnUndo;
     private Button btnSignUp;
     private User user = new User();
+
+    private final String REGULAREXPRESSION = "^[A-Za-z0-9+_.-]+@(.+)$";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +42,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         btnCancel.setOnClickListener(this);
         btnRedo = (Button)findViewById(R.id.btnRedo);
         btnRedo.setOnClickListener(this);
+        btnRedo.setEnabled(false);
         btnUndo = (Button)findViewById(R.id.btnUndo);
         btnUndo.setOnClickListener(this);
         btnSignUp = (Button)findViewById(R.id.btnSignUp);
@@ -48,6 +54,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.btnBack:
                 Toast.makeText(this,"Back button pressed",Toast.LENGTH_SHORT);
+                //TODO
+                //Go to the login activity
                 break;
             case R.id.btnUndo:
                 Toast.makeText(this,"Undo button pressed",Toast.LENGTH_SHORT);
@@ -59,20 +67,37 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                 login.setText("");
                 password.setText("");
                 confirmPassword.setText("");
+                btnRedo.setEnabled(true);
                 break;
             case R.id.btnRedo:
                 Toast.makeText(this,"Redo button pressed",Toast.LENGTH_SHORT);
                 fullName.setText(user.getFullName());
                 email.setText(user.getEmail());
                 login.setText(user.getLogin());
+                btnRedo.setEnabled(false);
                 break;
             case R.id.btnSignUp:
                 Toast.makeText(this,"Sign Up button pressed",Toast.LENGTH_SHORT);
+                Pattern pattern = Pattern.compile(REGULAREXPRESSION);
+                Matcher matcher = pattern.matcher(email.getText());
                 if(!password.getText().equals(confirmPassword.getText())){
                     Toast.makeText(this,"The passwords doesn't match",Toast.LENGTH_SHORT);
                 }else if(login.getText().equals("")||email.getText().equals("")||fullName.getText().equals("")||
                     password.getText().equals("")||confirmPassword.getText().equals("")){
                     Toast.makeText(this,"Some field is empty",Toast.LENGTH_SHORT);
+                }else if(login.getText().length()>50){
+                    Toast.makeText(this,"Error: login too long",Toast.LENGTH_SHORT);
+                }else if(email.getText().length()>80){
+                    Toast.makeText(this,"Error: The email is too long",Toast.LENGTH_SHORT);
+                }else if(fullName.getText().length()>85){
+                    Toast.makeText(this,"Error: Full Name too long",Toast.LENGTH_SHORT);
+                }else if(password.getText().length()>200 || confirmPassword.getText().length()>200){
+                    Toast.makeText(this,"Error: Password is too long",Toast.LENGTH_SHORT);
+                }else if(!matcher.matches()){
+                    Toast.makeText(this,"Error: The email doesn't match the minimum requirements",Toast.LENGTH_SHORT);
+                }else{
+                    //TODO
+                    //Check the things on the database and if everything goes well then go to Log Out activity
                 }
                 break;
         }
