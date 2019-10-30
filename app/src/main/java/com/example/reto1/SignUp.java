@@ -2,16 +2,23 @@ package com.example.reto1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.reto1.control.Client;
+import com.example.reto1.control.ClientFactory;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retoLogin.User;
+import retoLogin.exceptions.AlreadyExistsException;
+import retoLogin.exceptions.NoThreadAvailableException;
+import retoLogin.exceptions.RegisterException;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener{
     private EditText fullName;
@@ -31,6 +38,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        Intent intent = getIntent();
 
         fullName = (EditText)findViewById(R.id.tfFullName);
         email = (EditText)findViewById(R.id.tfEmail);
@@ -54,8 +63,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.btnBack:
                 Toast.makeText(this,"Back button pressed",Toast.LENGTH_SHORT);
-                //TODO
-                //Go to the login activity
+                finish();//Go to the login activity
                 break;
             case R.id.btnUndo:
                 Toast.makeText(this,"Undo button pressed",Toast.LENGTH_SHORT);
@@ -98,6 +106,26 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                 }else{
                     //TODO
                     //Check the things on the database and if everything goes well then go to Log Out activity
+                    user.setLogin(login.getText().toString());
+                    user.setEmail(email.getText().toString());
+                    user.setFullName(fullName.getText().toString());
+                    user.setPassword(password.getText().toString());
+                    try{
+                        Client client =
+                                ClientFactory.getClient(getResources()
+                                        .getString(R.string.serverIp), getResources().getInteger(R.integer.serverPort));
+                        client.registerUser(user);
+
+                    }catch (NoThreadAvailableException e){
+                        Toast.makeText(this,"Error: The server is bussy right now, please try again in a few minutes",Toast.LENGTH_LONG);
+                    }catch (RegisterException e){
+                        Toast.makeText(this,"Error: Cannot register the new user",Toast.LENGTH_LONG);
+                    } catch (AlreadyExistsException e){
+                        Toast.makeText(this,"Error: The user with the login you are trying to register already exists",Toast.LENGTH_LONG);
+                    }finally{
+                        Intent intent = new Intent(this, LogOut.class);
+                        intent.putExtra("USER", user);
+                    }
                 }
                 break;
         }
