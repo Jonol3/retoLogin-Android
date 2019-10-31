@@ -87,19 +87,19 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
             case R.id.btnSignUp:
                 Toast.makeText(this,"Sign Up button pressed",Toast.LENGTH_SHORT).show();
                 Pattern pattern = Pattern.compile(REGULAREXPRESSION);
-                Matcher matcher = pattern.matcher(email.getText());
-                if(!password.getText().equals(confirmPassword.getText())){
+                Matcher matcher = pattern.matcher(email.getText().toString());
+                if(!password.getText().toString().equals(confirmPassword.getText().toString())){
                     Toast.makeText(this,"The passwords doesn't match",Toast.LENGTH_SHORT).show();
-                }else if(login.getText().equals("")||email.getText().equals("")||fullName.getText().equals("")||
-                    password.getText().equals("")||confirmPassword.getText().equals("")){
+                }else if(login.getText().toString().equals("")||email.getText().toString().equals("")||fullName.getText().toString().equals("")||
+                    password.getText().toString().equals("")||confirmPassword.getText().toString().equals("")){
                     Toast.makeText(this,"Some field is empty",Toast.LENGTH_SHORT).show();
-                }else if(login.getText().length()>50){
+                }else if(login.getText().toString().length()>50){
                     Toast.makeText(this,"Error: login too long",Toast.LENGTH_SHORT).show();
-                }else if(email.getText().length()>80){
+                }else if(email.getText().toString().length()>80){
                     Toast.makeText(this,"Error: The email is too long",Toast.LENGTH_SHORT).show();
-                }else if(fullName.getText().length()>85){
+                }else if(fullName.getText().toString().length()>85){
                     Toast.makeText(this,"Error: Full Name too long",Toast.LENGTH_SHORT).show();
-                }else if(password.getText().length()>200 || confirmPassword.getText().length()>200){
+                }else if(password.getText().toString().length()>200 || confirmPassword.getText().length()>200){
                     Toast.makeText(this,"Error: Password is too long",Toast.LENGTH_SHORT).show();
                 }else if(!matcher.matches()){
                     Toast.makeText(this,"Error: The email doesn't match the minimum requirements",Toast.LENGTH_SHORT).show();
