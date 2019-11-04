@@ -20,13 +20,19 @@ import com.example.reto1.control.ClientFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Class for the Login activity
+ * @author Daira Eguzkiza, Jon Calvo Gaminde
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button buttonLogin;
     Button buttonSignup;
     EditText tfLogin;
     EditText pfPassword;
 
+    /**
+     * Initializes the Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,18 +45,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pfPassword = (EditText)findViewById(R.id.pfPassword);
     }
 
-
-    public int handleLoginButtonAction(String login, String passwd){
+    /**
+     * This will try to log in the user. Controlls wether the data entered is
+     * valid or not.
+     * @param login The users login
+     * @param passwd The users password
+     */
+    public void handleLoginButtonAction(String login, String passwd){
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(login);
         boolean specialChars = m.find();
         //The limiter should do its job, but this code double checks
         if(login.length()>30 || specialChars){
             Toast.makeText(this,"You must enter a valid username.",Toast.LENGTH_LONG).show();
-            return 1;
         }else if(login.length()<1 || passwd.length()<1){
             Toast.makeText(this,"You must enter a username and a password.",Toast.LENGTH_LONG).show();
-            return 2;
         }else{
             try{
                 User user = new User();
@@ -76,17 +85,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this,"The password you have entered is not correct.",Toast.LENGTH_LONG).show();
             }
         }
-        return 3;
     }
 
+    /**
+     * This will try to open the sign up window.
+     */
     public void handleSignUpButtonAction(){
         Intent intent = new Intent(this, SignUp.class);
         setResult(RESULT_OK, intent);
         startActivity(intent);
     }
+
+    /**
+     * Checks if a button has been clicked, and calls their method
+     * @param view The current view
+     */
     public void onClick(View view){
         if(view.getId()==buttonLogin.getId() ) {
-
             handleLoginButtonAction(tfLogin.getText().toString(), pfPassword.getText().toString());
         }
            else if(view.getId()==buttonSignup.getId()){

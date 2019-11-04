@@ -3,6 +3,7 @@ package com.example.reto1.control;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import retoLogin.Message;
@@ -89,8 +90,8 @@ public class ClientThread extends Thread{
             ObjectInputStream entrada = null;
             ObjectOutputStream salida = null;
             try {
-                cliente = new Socket(ip,puerto);
-                cliente.setSoTimeout(5000);
+                cliente = new Socket();
+                cliente.connect(new InetSocketAddress(ip,puerto), 2000);
 
                 salida = new ObjectOutputStream(cliente.getOutputStream());
                 entrada = new ObjectInputStream(cliente.getInputStream());
@@ -132,8 +133,8 @@ public class ClientThread extends Thread{
             ObjectInputStream entrada = null;
             ObjectOutputStream salida = null;
             try {
-                cliente = new Socket(ip, puerto);
-                cliente.setSoTimeout(5000);
+                cliente = new Socket();
+                cliente.connect(new InetSocketAddress(ip,puerto), 2000);
 
                 salida = new ObjectOutputStream(cliente.getOutputStream());
                 entrada = new ObjectInputStream(cliente.getInputStream());

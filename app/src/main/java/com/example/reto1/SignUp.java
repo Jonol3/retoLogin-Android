@@ -20,6 +20,10 @@ import retoLogin.exceptions.AlreadyExistsException;
 import retoLogin.exceptions.NoThreadAvailableException;
 import retoLogin.exceptions.RegisterException;
 
+/**
+ * Class for the SignUp activity
+ * @author Unai Pérez Sánchez
+ */
 public class SignUp extends AppCompatActivity implements View.OnClickListener{
     private EditText fullName;
     private EditText email;
@@ -34,6 +38,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
 
     private final String REGULAREXPRESSION = "^[A-Za-z0-9+_.-]+@(.+)$";
 
+    /*
+     * Initializes the Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +65,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         btnSignUp.setOnClickListener(this);
     }
 
+    /**
+     * Checks if a button has been clicked, and executes their actions
+     * @param v The current view
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()){

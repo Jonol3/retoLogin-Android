@@ -10,10 +10,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+/**
+ * Class for the LogOut activity
+ * @author Jon Calvo Gaminde
+ */
 public class LogOut extends AppCompatActivity implements View.OnClickListener {
     private User user = new User();
     private TextView tvGreeting;
     private Button btnLogOut;
+
+    /*
+     * Initializes the Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +38,12 @@ public class LogOut extends AppCompatActivity implements View.OnClickListener {
         btnLogOut.setOnClickListener(this);
     }
 
+    /**
+     * Checks if the LogOut button has been clicked, and finishes the Activity
+     * @param view The current view
+     */
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
         finish();
     }
 }
