@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(login);
         boolean specialChars = m.find();
-        //THE LIMITER SHOULD DO ITS JOB, BUT STILL I AM CHECKING THE LENGTH
-        //JUST IN CASE...
+        //The limiter should do its job, but this code double checks
         if(login.length()>30 || specialChars){
             Toast.makeText(this,"You must enter a valid username.",Toast.LENGTH_LONG).show();
             return 1;

@@ -14,10 +14,14 @@ import retoLogin.exceptions.LoginException;
 import retoLogin.exceptions.NoThreadAvailableException;
 import retoLogin.exceptions.RegisterException;
 
+/**
+ * The class used as connection with the server
+ * @author Jon Calvo Gaminde
+ */
 public class ClientThread extends Thread{
     private int puerto;
     private String ip;
-    int type;
+    private int type;
     private int answer;
     private User user;
     private User data;
@@ -29,7 +33,14 @@ public class ClientThread extends Thread{
         this.user = user;
     }
 
-
+    /**
+     * This methods returns the result of a login.
+     * @return The full user that gets from the server (if it has it), else null.
+     * @throws BadLoginException The login was wrong.
+     * @throws BadPasswordException The password was wrong.
+     * @throws LoginException An Exception of the database, or failed to connect to it.
+     * @throws NoThreadAvailableException The database is overloaded.
+     */
     public synchronized User getLoginResult() throws BadLoginException, BadPasswordException, LoginException, NoThreadAvailableException {
         switch (answer) {
             case 0:
@@ -47,6 +58,12 @@ public class ClientThread extends Thread{
         return null;
     }
 
+    /**
+     * This methods checks the result of a register.
+     * @throws AlreadyExistsException The users login already exists in the DB.
+     * @throws NoThreadAvailableException The database is overloaded.
+     * @throws RegisterException An Exception of the database, or failed to connect to it.
+     */
     public synchronized void getRegisterResult() throws AlreadyExistsException, NoThreadAvailableException, RegisterException {
         switch (answer) {
             case 0:
@@ -58,12 +75,15 @@ public class ClientThread extends Thread{
             case 3:
                 throw new AlreadyExistsException("User already exists.");
         }
-        return;
     }
 
+    /**
+     * This method creates the socket and does the DAO operation.
+     */
     @Override
     public void run() {
         if (type == 1) {
+            //This operation is a login
             Message message = new Message();
             Socket cliente = null;
             ObjectInputStream entrada = null;
@@ -76,7 +96,7 @@ public class ClientThread extends Thread{
                 entrada = new ObjectInputStream(cliente.getInputStream());
 
                 message.setUser(user);
-                message.setType(1);
+                message.setType(type);
                 salida.writeObject(message);
                 Message m = (Message) entrada.readObject();
 
@@ -106,6 +126,7 @@ public class ClientThread extends Thread{
             }
 
         } else if (type == 2){
+            //This operation is a register
             Message message = new Message();
             Socket cliente = null;
             ObjectInputStream entrada = null;
@@ -118,7 +139,7 @@ public class ClientThread extends Thread{
                 entrada = new ObjectInputStream(cliente.getInputStream());
 
                 message.setUser(user);
-                message.setType(2);
+                message.setType(type);
                 salida.writeObject(message);
 
                 Message m = (Message) entrada.readObject();
