@@ -70,6 +70,7 @@ public class ClientThread extends Thread{
             ObjectOutputStream salida = null;
             try {
                 cliente = new Socket(ip,puerto);
+                cliente.setSoTimeout(5000);
 
                 salida = new ObjectOutputStream(cliente.getOutputStream());
                 entrada = new ObjectInputStream(cliente.getInputStream());
@@ -84,7 +85,8 @@ public class ClientThread extends Thread{
                     data = m.getUser();
                 else
                     data = null;
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException  e) {
+                //SocketTimeoutException and SocketException are caught by the IOException
                 answer = 1;
             } finally {
                 try {
@@ -110,6 +112,7 @@ public class ClientThread extends Thread{
             ObjectOutputStream salida = null;
             try {
                 cliente = new Socket(ip, puerto);
+                cliente.setSoTimeout(5000);
 
                 salida = new ObjectOutputStream(cliente.getOutputStream());
                 entrada = new ObjectInputStream(cliente.getInputStream());
@@ -120,8 +123,9 @@ public class ClientThread extends Thread{
 
                 Message m = (Message) entrada.readObject();
 
-
+                answer = m.getType();
             } catch (IOException | ClassNotFoundException e) {
+                //SocketTimeoutException and SocketException are caught by the IOException
                 answer = 1;
             } finally {
 

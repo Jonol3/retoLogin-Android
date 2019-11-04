@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("USER", user);
                 setResult(RESULT_OK, intent);
                 startActivity(intent);
+                tfLogin.setText("");
+                pfPassword.setText("");
             }catch(LoginException e){
-                Toast.makeText(this, "Unexpected error",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Unexpected error happened.",Toast.LENGTH_LONG).show();
             }catch(BadLoginException e){
                 Toast.makeText(this,"The user you have entered is not correct.",Toast.LENGTH_LONG).show();
             }catch(NoThreadAvailableException e){

@@ -62,11 +62,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnBack:
-                Toast.makeText(this,"Back button pressed",Toast.LENGTH_SHORT).show();
                 finish();//Go to the login activity
                 break;
             case R.id.btnUndo:
-                Toast.makeText(this,"Undo button pressed",Toast.LENGTH_SHORT).show();
                 user.setFullName(fullName.getText().toString());
                 user.setEmail(email.getText().toString());
                 user.setLogin(login.getText().toString());
@@ -78,58 +76,57 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                 btnRedo.setEnabled(true);
                 break;
             case R.id.btnRedo:
-                Toast.makeText(this,"Redo button pressed",Toast.LENGTH_SHORT).show();
                 fullName.setText(user.getFullName());
                 email.setText(user.getEmail());
                 login.setText(user.getLogin());
                 btnRedo.setEnabled(false);
                 break;
             case R.id.btnSignUp:
-                Toast.makeText(this,"Sign Up button pressed",Toast.LENGTH_SHORT).show();
                 Pattern pattern = Pattern.compile(REGULAREXPRESSION);
                 Matcher matcher = pattern.matcher(email.getText().toString());
                 if(!password.getText().toString().equals(confirmPassword.getText().toString())){
-                    Toast.makeText(this,"The passwords doesn't match",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"The passwords doesn't match",Toast.LENGTH_LONG).show();
                 }else if(login.getText().toString().equals("")||email.getText().toString().equals("")||fullName.getText().toString().equals("")||
                     password.getText().toString().equals("")||confirmPassword.getText().toString().equals("")){
-                    Toast.makeText(this,"Some field is empty",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"Some field is empty",Toast.LENGTH_LONG).show();
                 }else if(login.getText().toString().length()>50){
-                    Toast.makeText(this,"Error: login too long",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"Error: login too long",Toast.LENGTH_LONG).show();
                 }else if(email.getText().toString().length()>80){
-                    Toast.makeText(this,"Error: The email is too long",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"Error: The email is too long",Toast.LENGTH_LONG).show();
                 }else if(fullName.getText().toString().length()>85){
-                    Toast.makeText(this,"Error: Full Name too long",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"Error: Full Name too long",Toast.LENGTH_LONG).show();
                 }else if(password.getText().toString().length()>200 || confirmPassword.getText().length()>200){
-                    Toast.makeText(this,"Error: Password is too long",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"Error: Password is too long",Toast.LENGTH_LONG).show();
                 }else if(!matcher.matches()){
-                    Toast.makeText(this,"Error: The email doesn't match the minimum requirements",Toast.LENGTH_SHORT).show();
-                }else{
-                    //TODO
+                    Toast.makeText(this,"Error: The email doesn't match the minimum requirements",Toast.LENGTH_LONG).show();
+                }else {
                     //Check the things on the database and if everything goes well then go to Log Out activity
                     user.setLogin(login.getText().toString());
                     user.setEmail(email.getText().toString());
                     user.setFullName(fullName.getText().toString());
                     user.setPassword(password.getText().toString());
-                    try{
+                    try {
                         Client client =
                                 ClientFactory.getClient(getResources()
                                         .getString(R.string.serverIp), getResources().getInteger(R.integer.serverPort));
                         client.registerUser(user);
 
-                    }catch (NoThreadAvailableException e){
-                        Toast.makeText(this,"Error: The server is bussy right now, please try again in a few minutes",Toast.LENGTH_LONG).show();
-                    }catch (RegisterException e){
-                        Toast.makeText(this,"Error: Cannot register the new user",Toast.LENGTH_LONG).show();
-                    } catch (AlreadyExistsException e){
-                        Toast.makeText(this,"Error: The user with the login you are trying to register already exists",Toast.LENGTH_LONG).show();
-                    }finally{
                         Intent intent = new Intent(this, LogOut.class);
                         intent.putExtra("USER", user);
                         setResult(RESULT_OK, intent);
                         startActivity(intent);
+                        finish();
+
+                    } catch (NoThreadAvailableException e) {
+                        Toast.makeText(this, "Error: The server is bussy right now, please try again in a few minutes", Toast.LENGTH_LONG).show();
+                    } catch (RegisterException e) {
+                        Toast.makeText(this, "Error: Cannot register the new user", Toast.LENGTH_LONG).show();
+                    } catch (AlreadyExistsException e) {
+                        Toast.makeText(this, "Error: The user with the login you are trying to register already exists", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
+
         }
     }
 }
