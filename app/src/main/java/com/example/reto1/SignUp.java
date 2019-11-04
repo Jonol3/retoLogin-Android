@@ -84,7 +84,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
             case R.id.btnSignUp:
                 Pattern pattern = Pattern.compile(REGULAREXPRESSION);
                 Matcher matcher = pattern.matcher(email.getText().toString());
-                if(!password.getText().toString().equals(confirmPassword.getText().toString())){
+                Pattern patt = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+                Matcher match = patt.matcher(login.getText().toString());
+                boolean specialChars = match.find();
+                if(specialChars) {
+                    Toast.makeText(this,"You must enter a valid username.",Toast.LENGTH_LONG).show();
+                }else if(!password.getText().toString().equals(confirmPassword.getText().toString())){
                     Toast.makeText(this,"The passwords doesn't match",Toast.LENGTH_LONG).show();
                 }else if(login.getText().toString().equals("")||email.getText().toString().equals("")||fullName.getText().toString().equals("")||
                     password.getText().toString().equals("")||confirmPassword.getText().toString().equals("")){
