@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import retoLogin.User;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ public class LogOut extends AppCompatActivity implements View.OnClickListener {
     private User user = new User();
     private TextView tvGreeting;
     private Button btnLogOut;
+    private MediaPlayer mp;
 
     /*
      * Initializes the Activity
@@ -36,6 +38,7 @@ public class LogOut extends AppCompatActivity implements View.OnClickListener {
         tvGreeting.setText(getResources().getString(R.string.greeting) + " " + user.getFullName());
 
         btnLogOut.setOnClickListener(this);
+        mp = MediaPlayer.create(this, R.raw.button);
     }
 
     /**
@@ -44,6 +47,7 @@ public class LogOut extends AppCompatActivity implements View.OnClickListener {
      */
     @Override
     public void onClick(View view) {
+        mp.start();
         finish();
     }
 }

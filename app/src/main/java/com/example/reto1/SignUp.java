@@ -3,6 +3,7 @@ package com.example.reto1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     private Button btnUndo;
     private Button btnSignUp;
     private User user = new User();
+    private MediaPlayer mp;
 
     private final String REGULAREXPRESSION = "^[A-Za-z0-9+_.-]+@(.+)$";
 
@@ -63,6 +65,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
         btnUndo.setOnClickListener(this);
         btnSignUp = (Button)findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(this);
+        mp = MediaPlayer.create(this, R.raw.button);
     }
 
     /**
@@ -73,9 +76,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnBack:
+                mp.start();
                 finish();//Go to the login activity
                 break;
             case R.id.btnUndo:
+                mp.start();
                 user.setFullName(fullName.getText().toString());
                 user.setEmail(email.getText().toString());
                 user.setLogin(login.getText().toString());
@@ -87,6 +92,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                 btnRedo.setEnabled(true);
                 break;
             case R.id.btnRedo:
+                mp.start();
                 fullName.setText(user.getFullName());
                 email.setText(user.getEmail());
                 login.setText(user.getLogin());
@@ -117,6 +123,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                     Toast.makeText(this,"Error: The email doesn't match the minimum requirements",Toast.LENGTH_LONG).show();
                 }else {
                     //Check the things on the database and if everything goes well then go to Log Out activity
+                    mp.start();
                     user.setLogin(login.getText().toString());
                     user.setEmail(email.getText().toString());
                     user.setFullName(fullName.getText().toString());

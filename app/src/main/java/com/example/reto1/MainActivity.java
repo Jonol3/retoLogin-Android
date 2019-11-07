@@ -8,6 +8,7 @@ import retoLogin.exceptions.NoThreadAvailableException;
 import retoLogin.User;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,10 +26,12 @@ import java.util.regex.Pattern;
  * @author Daira Eguzkiza, Jon Calvo Gaminde
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button buttonLogin;
-    Button buttonSignup;
-    EditText tfLogin;
-    EditText pfPassword;
+    private Button buttonLogin;
+    private Button buttonSignup;
+    private EditText tfLogin;
+    private EditText pfPassword;
+    private MediaPlayer mp;
+
 
     /**
      * Initializes the Activity
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonSignup.setOnClickListener(this);
         tfLogin = (EditText)findViewById(R.id.tfLogin);
         pfPassword = (EditText)findViewById(R.id.pfPassword);
+        mp = MediaPlayer.create(this, R.raw.button);
+
+
+
     }
 
     /**
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this,"You must enter a username and a password.",Toast.LENGTH_LONG).show();
         }else{
             try{
+                mp.start();
                 User user = new User();
                 user.setLogin(login);
                 user.setPassword(passwd);
@@ -91,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * This will try to open the sign up window.
      */
     public void handleSignUpButtonAction(){
+        mp.start();
         Intent intent = new Intent(this, SignUp.class);
         setResult(RESULT_OK, intent);
         startActivity(intent);
@@ -101,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param view The current view
      */
     public void onClick(View view){
+
         if(view.getId()==buttonLogin.getId() ) {
             handleLoginButtonAction(tfLogin.getText().toString(), pfPassword.getText().toString());
         }
