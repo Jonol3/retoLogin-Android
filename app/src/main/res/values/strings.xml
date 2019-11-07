@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Reto1</string>
+    <string name="app_name">Login</string>
     <string name="loginHint">Login</string>
     <string name="passwordHint">Password</string>
     <string name="buttonSignUp">Sign Up</string>

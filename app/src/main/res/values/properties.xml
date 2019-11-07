@@ -1,4 +1,4 @@
 <resources>
-    <string name="serverIp">192.168.21.94</string>
+    <string name="serverIp">macinf09.tartangalh.eus</string>
     <integer name="serverPort">5001</integer>
 </resources>
