@@ -74,7 +74,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnBack:
                 mp.start();
                 finish();//Go to the login activity
@@ -104,10 +104,16 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
                 Pattern patt = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
                 Matcher match = patt.matcher(login.getText().toString());
                 boolean specialChars = match.find();
-                if(specialChars) {
-                    Toast.makeText(this,"You must enter a valid username.",Toast.LENGTH_LONG).show();
-                }else if(!password.getText().toString().equals(confirmPassword.getText().toString())){
-                    Toast.makeText(this,"The passwords doesn't match",Toast.LENGTH_LONG).show();
+                if (specialChars) {
+                    Toast.makeText(this, "You must enter a valid username.", Toast.LENGTH_LONG).show();
+                } else if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
+                    Toast.makeText(this, "The passwords doesn't match", Toast.LENGTH_LONG).show();
+                }else if(email.getText().toString().trim().isEmpty()||
+                        fullName.getText().toString().trim().isEmpty()||
+                        login.getText().toString().trim().isEmpty()||
+                        confirmPassword.getText().toString().trim().isEmpty()||
+                        password.getText().toString().trim().isEmpty()){
+                    Toast.makeText(this,"You cannot enter empty or with only whitespaces fields",Toast.LENGTH_LONG).show();
                 }else if(login.getText().toString().equals("")||email.getText().toString().equals("")||fullName.getText().toString().equals("")||
                     password.getText().toString().equals("")||confirmPassword.getText().toString().equals("")){
                     Toast.makeText(this,"Some field is empty",Toast.LENGTH_LONG).show();
